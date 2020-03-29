@@ -15,7 +15,7 @@ class Header extends Component {
           paddingBottom: 20
         }}
       >
-        <h2>
+        <h2 style={{ color: localStorage.getItem('textColor') }}>
           <b>Where in the world?</b>
         </h2>
         <Fragment>

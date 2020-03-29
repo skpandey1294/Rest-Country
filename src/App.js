@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import './App.css';
 
 import HomePage from './components/HomePage';
-import CountryDetails from './components/CountryDetails';
+import DetailPage from './components/DetailPage';
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route path="/" exact component={HomePage} />
-          <Route path="/country/:capital" exact component={CountryDetails} />
+          <Route path="/country/:capital" exact component={DetailPage} />
         </Switch>
       </BrowserRouter>
     </div>

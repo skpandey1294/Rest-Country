@@ -11,9 +11,7 @@ class CountryDetails extends Component {
   }
 
   componentDidMount() {
-    fetch(
-      `https://restcountries.eu/rest/v2/capital/${this.props.match.params.capital}`
-    )
+    fetch(`https://restcountries.eu/rest/v2/capital/${this.props.capital}`)
       .then(data => data.json())
       .then(data => {
         console.log(data[0]);
@@ -54,7 +52,9 @@ class CountryDetails extends Component {
                       paddingRight: 40,
                       paddingTop: 10,
                       paddingBottom: 10,
-                      borderRadius: 5
+                      borderRadius: 5,
+                      color: localStorage.getItem('textColor'),
+                      backgroundColor: localStorage.getItem('cardColor')
                     }}
                   >
                     Back
@@ -78,7 +78,9 @@ class CountryDetails extends Component {
                 </div>
                 <div style={{ textAlign: 'left' }}>
                   <div>
-                    <h1>{this.state.country[0].name}</h1>
+                    <h1 style={{ color: localStorage.getItem('textColor') }}>
+                      {this.state.country[0].name}
+                    </h1>
                   </div>
                   <div style={{ display: 'flex', lineHeight: 1.8 }}>
                     <div style={{ marginRight: 100 }}>
@@ -120,7 +122,11 @@ class CountryDetails extends Component {
                       <b>Border Countries</b>:{' '}
                       {this.state.country[0].borders.map(border => (
                         <button
-                          style={{ marginLeft: 10, backgroundColor: '#ffffff' }}
+                          style={{
+                            marginLeft: 10,
+                            backgroundColor: localStorage.getItem('cardColor'),
+                            border: 0
+                          }}
                         >
                           {border}
                         </button>

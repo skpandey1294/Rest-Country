@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from 'react';
 
 import Header from './Header';
-import Dropdown from './Dropdown';
+import DropdownList from './DropdownList';
 import SearchBar from './SerachBar';
 import Main from './Main';
 
@@ -15,30 +15,53 @@ body{
 }`;
 
 class HomePage extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      theme: { mode: 'dark' },
-      headerStyle: '#2b3743',
-      cardColor: '#2b3743',
-      textColor: '#ffffff',
-      search: false
+      theme: { mode: localStorage.getItem('mode') },
+      search: false,
+      filter: false
     };
   }
 
+  componentDidMount() {
+    if (!localStorage.getItem('mode')) {
+      localStorage.setItem('mode', 'dark');
+      localStorage.setItem('headerStyle', '#2b3743');
+      localStorage.setItem('cardColor', '#2b3743');
+      localStorage.setItem('textColor', '#ffffff');
+    }
+  }
+
   darkModeHandler = () => {
+    if (localStorage.getItem('mode') === 'dark') {
+      localStorage.setItem('mode', 'white');
+      localStorage.setItem('headerStyle', '#ffffff');
+      localStorage.setItem('cardColor', '#ffffff');
+      localStorage.setItem('textColor', 'black');
+    } else {
+      localStorage.setItem('mode', 'dark');
+      localStorage.setItem('headerStyle', '#2b3743');
+      localStorage.setItem('cardColor', '#2b3743');
+      localStorage.setItem('textColor', '#ffffff');
+    }
     this.setState({
       theme:
-        this.state.theme.mode === 'dark' ? { mode: 'white' } : { mode: 'dark' },
-      headerStyle: this.state.headerStyle === '#ffffff' ? '#2b3743' : '#ffffff',
-      cardColor: this.state.cardColor === '#ffffff' ? '#2b3743' : '#ffffff',
-      textColor: this.state.textColor === 'black' ? '#ffffff' : 'black'
+        this.state.theme.mode === 'dark' ? { mode: 'white' } : { mode: 'dark' }
     });
   };
 
   searchHandler = bool => {
     this.setState({
-      search: bool
+      search: bool,
+      filter: !this.state.filter
+    });
+  };
+
+  filterHandler = bool => {
+    this.setState({
+      search: !this.state.search,
+      filter: bool
     });
   };
 
@@ -49,9 +72,9 @@ class HomePage extends Component {
           <GlobalStyle />
           <Fragment>
             <Header
-              headerStyle={this.state.headerStyle}
+              headerStyle={localStorage.getItem('headerStyle')}
               darkModeHandler={this.darkModeHandler}
-              textColor={this.state.textColor}
+              textColor={localStorage.getItem('textColor')}
             />
             <br></br>
             <br></br>
@@ -60,22 +83,29 @@ class HomePage extends Component {
                 display: 'flex',
                 justifyContent: 'space-between',
                 marginLeft: 25,
-                marginRight: 25
+                marginRight: 25,
+                borderWidth: 2,
+                borderColor: 'red'
               }}
             >
               <SearchBar
                 searchHandler={this.searchHandler}
                 cardColor={this.state.cardColor}
                 textColor={this.state.textColor}
+                isActive={this.state.search}
               />
-              <Dropdown />
+
+              <DropdownList
+                filterHandler={this.filterHandler}
+                isActive={this.state.filter}
+              />
             </div>
             <br></br>
             <br></br>
-            {this.state.search === false && (
+            {this.state.search === false && this.state.filter === false && (
               <Main
-                cardColor={this.state.cardColor}
-                textColor={this.state.textColor}
+                cardColor={localStorage.getItem('cardColor')}
+                textColor={localStorage.getItem('textColor')}
               />
             )}
           </Fragment>

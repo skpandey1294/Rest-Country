@@ -18,10 +18,10 @@ class SerachBar extends Component {
     fetch(`https://restcountries.eu/rest/v2/name/${this.state.countrySearch}`)
       .then(response => response.json())
       .then(country => {
+        localStorage.setItem('countries', []);
         this.setState({
           countryName: country
         });
-        console.log(country);
       })
       .catch(err => console.error(err));
   };
@@ -51,14 +51,14 @@ class SerachBar extends Component {
               classNames="test-class"
             />
           </div>
-          {this.state.countryName.length > 0 && (
+          {this.state.countryName.length > 0 && this.props.isActive === true && (
             <div>
               <br></br>
               <br></br>
               <Card
                 country={this.state.countryName}
-                cardColor={this.props.cardColor}
-                textColor={this.props.textColor}
+                cardColor={localStorage.getItem('cardColor')}
+                textColor={localStorage.getItem('textColor')}
                 cardMargin={18}
               />
             </div>
